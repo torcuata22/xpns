@@ -1,7 +1,9 @@
 {% extends 'myapp/base.html' %}
+{% load static %}
+{% load humanize %}
 
 {% block body %}
-<h1>This is the index page</h1>
+<div class="m-10 font-bold">Add new expenses ➕</div>
 <form class="shadow-lg m-10 rounded-lg" method = "post">
 {% csrf_token %}
 <div class="form-container px-10 py-10 flex">
@@ -16,7 +18,7 @@
         <div class="mb-5">
             <label>Amount</label>
         </div>
-        <div class="border">{{ expense_form.amount }}</div>
+        <div class="border">${{ expense_form.amount }}</div>
     </div>
 
     <div class="mx-10">
@@ -35,10 +37,10 @@
 
 </form>
 
-<div>Expenses</div>
+<div class="m-10 font-bold">Expenses</div>
 
 <div class="shadow-lg m-10 rounded-lg">
-    <div class="expense-header flex flex-wrap space-x-40">
+    <div class="expense-header flex flex-wrap space-x-40 px-20 py-5">
         <span>Name</span>
         <span>Amount</span>
         <span>Category</span>
@@ -50,18 +52,23 @@
     {% for expense in expenses %}
     <div class="expense-row flex-wrap px-20 py-5">
         <span class="font-bold">{{ expense.name }}</span>
-        <span class="font-bold">{{ expense.amount }}</span>
+        <span class="font-bold">${{ expense.amount | intcomma }}</span>
         <span class="font-bold">{{ expense.category }}</span>
         <span class="font-bold">{{ expense.date }}</span>
-        <span class="font-bold"><a href="{% url 'edit' expense.id %}">Edit</a></span>
-        <span class="font-bold">
+        <span class="pl-24"><a href="{% url 'edit' expense.id %}"><img class="h-5" src="{% static 'myapp/images/edit.png' %}" alt=""></a></span>
+        <span class="pl-22">
             <form method="post" action="{% url 'delete' expense.id %}">
                 {% csrf_token %}
-                <button type="submit" name="delete" >Delete</button>
+                <button type="submit" name="delete" class="font-bold"><img class="h-5" src="{% static 'myapp/images/delete.png' %}" alt=""></button>
             </form>
         </span>
     </div>
     {% endfor %}
+    <!--Display total expenses-->
+    <div class="px-72 py-5">
+    <span class="font-bold text-green-500">Total Expenses: ${{ total_expenses.amount__sum | intcomma }}</span>
+
+    </div>
 
 </div>    
 

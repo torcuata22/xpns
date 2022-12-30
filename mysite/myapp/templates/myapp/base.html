@@ -11,6 +11,15 @@
     <title>Document</title>
 </head>
 <body>
+<nav class="shadow-lg p-5">
+    <div class="container flex flex-wrap justufy-between items-center mx-auto">
+        <a href="#" class="flex">
+            <img class="h-20 mr-3" src="{% static 'myapp/images/wallet.png' %}" alt="">
+            <span class="self-center text-xl font-semibold">Expense Tracker</span>
+        </a>
+    </div>
+</nav>
+
     {% block body %}
 
     {% endblock %}

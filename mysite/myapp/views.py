@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Expense
 from .forms import ExpenseForm
+from django.db.models import Sum
 
 # Create your views here.
 def index(request):
@@ -10,9 +11,11 @@ def index(request):
             expense.save()
 
     expenses = Expense.objects.all()
+    total_expenses = expenses.aggregate(Sum('amount')) #remember: amount is the name of the field in the model
+    print(total_expenses)
 
     expense_form = ExpenseForm()
-    return render(request, 'myapp/index.html', {'expense_form':expense_form, 'expenses': expenses})
+    return render(request, 'myapp/index.html', {'expense_form':expense_form, 'expenses': expenses, 'total_expenses': total_expenses})
 
 def edit(request, id):
     expense = Expense.objects.get(id=id)
