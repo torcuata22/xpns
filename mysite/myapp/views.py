@@ -27,3 +27,10 @@ def edit(request, id):
             return redirect('index')
     
     return render(request, 'myapp/edit.html', {'expense_form': expense_form})
+
+
+def delete(request,id):
+    if request.method == "POST" and 'delete' in request.POST: #only executes if the word "delete" is on the request
+        expense = Expense.objects.get(id=id)
+        expense.delete()
+    return redirect ('index')
